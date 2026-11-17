@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-clinical-inference"
+version = "0.1.0"
+description = "Agentic clinical data pipeline: 7 agents from ingestion to inference (arXiv:2507.18115)"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "scikit-learn>=1.3",
+    "litellm>=1.60",
+    "strands-agents>=1.0",
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+embeddings = ["sentence-transformers>=2.0"]  # optional SapBERT matcher path
+explain = ["shap>=0.44"]  # optional SHAP explainability
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
