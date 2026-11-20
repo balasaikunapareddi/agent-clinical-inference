@@ -6,9 +6,9 @@ An implementation of Shimgekar et al., ["Agentic AI framework for End-to-End Med
 
 > **Not for clinical use.** This is a research demo on synthetic mock data. No real patient data, no real PHI, no clinical validation.
 
-## Try it live
+## Run it in your browser (local UI)
 
-**[https://agent-clinical-inference.onrender.com](https://agent-clinical-inference.onrender.com)** — run the full pipeline in your browser: pick a bundled synthetic dataset (fall-risk or anxiety) or upload your own CSV, press **Run pipeline**, and watch all seven agents work — matched model, accuracy / ROC-AUC, top explanations, and the full audit journal. Mock mode by default: no key, no install. (Free-tier hosting: the first visit after idle takes ~1 minute to wake.)
+Run the full pipeline from a local web UI: pick a bundled synthetic dataset (fall-risk or anxiety) or upload your own CSV, press **Run pipeline**, and watch all seven agents work — matched model, accuracy / ROC-AUC, top explanations, and the full audit journal. Mock mode by default: no key needed.
 
 Run the UI locally:
 
