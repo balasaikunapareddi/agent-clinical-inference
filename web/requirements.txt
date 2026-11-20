@@ -1,0 +1,15 @@
+# The clinical-inference web UI. The pipeline itself needs pandas +
+# scikit-learn (see ../requirements.txt); the UI adds FastAPI.
+# litellm is only exercised when GEMINI_API_KEY is set (live mode);
+# strands-agents is deliberately excluded — only `make chat` needs
+# it, and agent.py imports it lazily.
+fastapi
+uvicorn
+python-multipart  # CSV upload form
+pandas>=2.0
+scikit-learn>=1.3
+openpyxl>=3.1
+litellm>=1.60
+
+# Test-only (FastAPI's TestClient needs httpx):
+#   pip install httpx pytest

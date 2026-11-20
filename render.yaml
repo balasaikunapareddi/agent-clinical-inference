@@ -1,0 +1,21 @@
+# Render Blueprint — free tier. Deploys the clinical-inference web
+# UI (web/) as a public web service, straight from this repo. The
+# pipeline runs in mock mode by default: deterministic, no API key,
+# no network calls, no database — so there is nothing to configure
+# in the dashboard. (Optional: set GEMINI_API_KEY in the dashboard
+# to enable the live LLM steps; the UI falls back to mock mode if a
+# live call fails.)
+#
+# Free-tier notes: the instance spins down after 15 minutes idle and
+# takes ~1 minute to wake on the next visit. Fine for a storefront.
+services:
+  - type: web
+    name: agent-clinical-inference
+    env: python
+    plan: free
+    buildCommand: pip install -r web/requirements.txt
+    startCommand: uvicorn web.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
