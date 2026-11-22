@@ -14,14 +14,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-SYSTEM_PROMPT = (
-    "You are the assistant for the clinical inference pipeline. "
-    "You can run the end-to-end pipeline on a file, list the registered "
-    "models, and summarize a completed run. You never see raw patient "
-    "data: the pipeline anonymizes everything before any model or LLM "
-    "call. Answer concisely, in plain language, and always name the "
-    "run directory and the model that was used."
-)
+from clinical_inference.prompts import SYSTEM_PROMPT
 
 
 def build_agent():
@@ -90,9 +83,35 @@ def build_agent():
     )
 
 
+class ClinicalInferenceAgent:
+    """The clinical inference assistant, as one visible class.
+
+    What it is: a Strands ``Agent`` on LiteLLM
+    (``gemini/gemini-3.5-flash-lite``, needs GEMINI_API_KEY) that wraps
+    the deterministic 7-agent pipeline. Its instructions are
+    ``prompts.SYSTEM_PROMPT``; its tools are ``run_clinical_pipeline``
+    (run the end-to-end pipeline on a file), ``list_models`` (the model
+    registry), and ``get_run_report`` (read a completed run's report).
+    The agent writes message text only — it never decides a pipeline
+    transition; the state machine inside ``run_pipeline`` owns those,
+    and it never sees raw patient data (the pipeline anonymizes first).
+
+    ``run`` is one agent turn. Construction builds the underlying
+    Strands agent via :func:`build_agent`, which raises a clear error
+    if the Strands stack or the Gemini key is missing.
+    """
+
+    def __init__(self) -> None:
+        self.agent = build_agent()
+
+    def run(self, prompt: str):
+        """One agent turn: send ``prompt``, return the Strands result."""
+        return self.agent(prompt)
+
+
 def main() -> None:
     """Interactive chat loop: `python -m clinical_inference.agent`."""
-    agent = build_agent()
+    agent = ClinicalInferenceAgent()
     print("Clinical inference assistant (Strands + Gemini). Type 'quit' to exit.")
     while True:
         try:
@@ -103,7 +122,7 @@ def main() -> None:
             break
         if not user:
             continue
-        print(agent(user))
+        print(agent.run(user))
 
 
 if __name__ == "__main__":

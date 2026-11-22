@@ -38,7 +38,7 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 from fastapi import FastAPI, File, Form, UploadFile  # noqa: E402
 from fastapi.responses import HTMLResponse  # noqa: E402
 
-from clinical_inference.agent import SYSTEM_PROMPT  # noqa: E402
+from clinical_inference.prompts import SYSTEM_PROMPT  # noqa: E402
 from clinical_inference.pipeline import run_pipeline  # noqa: E402
 from clinical_inference.registry import (  # noqa: E402
     default_registry_path,

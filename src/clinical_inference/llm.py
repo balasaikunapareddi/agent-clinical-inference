@@ -18,6 +18,12 @@ import base64
 import os
 from pathlib import Path
 
+from clinical_inference.prompts import (
+    IMAGE_PROMPT,
+    MODEL_PICK_PROMPT_PREFIX,
+    MODEL_PICK_PROMPT_SUFFIX,
+)
+
 MODEL = "gemini/gemini-3.5-flash-lite"
 
 
@@ -75,13 +81,7 @@ class LLMClient:
             f"{', '.join(c.mapping.values())})"
             for c in candidates
         ]
-        prompt = (
-            "You are choosing the best clinical ML model for a dataset. "
-            "Eligible models (all required features matched):\n"
-            + "\n".join(lines)
-            + "\nReply with exactly two lines:\n"
-            "MODEL: <model name>\nJUSTIFICATION: <one sentence>"
-        )
+        prompt = MODEL_PICK_PROMPT_PREFIX + "\n".join(lines) + MODEL_PICK_PROMPT_SUFFIX
         text = self._complete(prompt)
         name = ""
         justification = ""
@@ -127,10 +127,7 @@ class LLMClient:
                         "content": [
                             {
                                 "type": "text",
-                                "text": "What imaging modality is this, and what "
-                                "disease type (if any) is visible? Reply with "
-                                "exactly two lines:\nMODALITY: <modality>\n"
-                                "DISEASE: <disease type or none>",
+                                "text": IMAGE_PROMPT,
                             },
                             {
                                 "type": "image_url",

@@ -17,6 +17,24 @@ pip install -r web/requirements.txt
 uvicorn web.app:app --reload   # http://127.0.0.1:8000
 ```
 
+## Project structure
+
+```
+src/clinical_inference/
+  prompts.py        all system prompts, as named constants (inspectable)
+  agent.py          ClinicalInferenceAgent (Strands) + its three tools
+  pipeline.py       the 7-agent pipeline, driven by the state machine
+  state_machine.py  deterministic transitions + policy gates
+  llm.py            LiteLLM wrapper (model pick, image headers; mock default)
+  ingestion.py / anonymizer.py / features.py / matcher.py /
+  preprocessing.py / inference.py   the pipeline steps
+  registry.py       model registry (load/list)
+  journal.py        typed run journal + report
+  cli.py            command-line entrypoint
+web/                FastAPI local UI (imports the package from src/)
+tests/              pipeline, matcher, state machine, eval suites
+```
+
 ## Architecture
 
 ```mermaid
